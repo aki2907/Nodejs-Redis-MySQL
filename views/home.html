@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Home</title>
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $.get("http://localhost:3000/fetchStatus",function(res){
+            $.each(res.message,function(index,value) {
+                $("#showStatus").append('You have posted <br> <p>'+value.tweets+'</p><hr>');
+            });
+        });
+    $("#addNewStatus").click(function(e){
+        e.preventDefault();
+            if($("#statusbox").text !== "") {
+                $.post("/addStatus",
+                                  { status : $("#statusbox").val() },
+                                   function(res){
+                    if(!res.error) {
+                        alert(res.message);
+                    }
+                })
+            }
+        });
+});
+</script>
+
+</head>
+
+<body>
+    <header class="navbar navbar-default navbar-fixed-top" id="banner" style="top: 0px;">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+                <a href="/" class="fa fa-twitter fa-4x" style="margin-left: 20px"></a>
+                <h1 class="navbar-text navbar-right" style="color: #0066ff; margin-left: 300px; font-weight: bold;">Twitter. What's Happening!</h1>
+            </a></div><div class="container">
+            <p class="navbar-text navbar-right">Hi you are login as <b><%= email %></b> (<a href="/logout/">Logout</a>)</p>
+        </div>
+    </nav>
+
+    <nav class="collapse navbar-collapse" id="navbar" role="navigation" aria-expanded="false" style="margin-top: 70px;">
+        <ul class="nav">
+            <li><a href="/">Featured</a></li>
+            <li><a href="#sports">Sports</a></li>
+            <li><a href="#music">Music</a></li>
+            <li><a href="#entertainment">Entertainment</a></li>
+            <li><a href="#news">News</a></li>
+            <li><a href="#lifestyle">Lifestyle</a></li>
+            <li class="dropdown">
+                <a class="dropbtn" href="#more">More</a>
+                <div class="dropdown-content">
+                    <a href="#government">Government and Politics</a>
+                    <a href="#tv">TV</a>
+                    <a href="#business">Business and CEOs</a>
+                    <a href="#women">Women and NGOs</a>
+                </div>
+            </li>
+        </ul>
+        </nav>
+    </header>
+
+    <div style="margin-top:150px; margin-right:100px; width:400px; float: right;">
+        <textarea rows="10" cols="5" id="statusbox" class="form-control"></textarea><br>
+        <input type="submit" id="addNewStatus" value="Post" class="btn btn-primary"><br>
+        <div id="showStatus" style="border : 2px grey; border-radius : 4px;">
+        </div>
+    </div>
+</body>
+</html>
